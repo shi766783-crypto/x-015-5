@@ -5,6 +5,7 @@ import { config, seed } from '../data'
 const storage = createStorage(config.storageKey, seed)
 export function useKeeper() {
   const state = reactive(storage.read())
+  if (!Array.isArray(state.shopping)) state.shopping = []
   const persist = () => storage.write(state)
   const add = (collection, item) => { state[collection].unshift({ id: `${collection}-${Date.now()}`, createdAt: new Date().toISOString(), ...item }); persist() }
   const update = (collection, id, patch) => { const item = state[collection].find((entry) => entry.id === id); if (item) Object.assign(item, patch); persist() }
